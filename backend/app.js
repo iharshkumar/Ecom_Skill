@@ -9,7 +9,7 @@ const { rateLimit } = require('express-rate-limit');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 const secretkey = process.env.SECRETKEY
 
 
@@ -84,11 +84,7 @@ app.use(express.json());
 
 
 //cors middleware
-app.use(cors({
-    origin: '*', // Allow all origins for development
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(cors())
 
 //s2
 async function connection() {
