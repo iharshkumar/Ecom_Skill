@@ -9,7 +9,7 @@ const { rateLimit } = require('express-rate-limit');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 const secretkey = process.env.SECRETKEY
 
 
@@ -84,7 +84,11 @@ app.use(express.json());
 
 
 //cors middleware
-app.use(cors())
+app.use(cors({
+    origin: '*', // Allow all origins for development
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 //s2
 async function connection() {
@@ -164,23 +168,37 @@ app.post('/products', async (req, res) => {
 
 app.post('/register', async (req, res) => {
     try {
-        const { username, password, email } = req.body;
+        const users = Array.isArray(req.body) ? req.body : [req.body];
 
-        // ✅ Check if user already exists
-        const existingUser = await usermodel.findOne({
-            $or: [{ username }, { email }]
+        const usernames = users.map(u => u.username);
+        const emails = users.map(u => u.email);
+
+        // Check for existing users
+        const existingUsers = await usermodel.findOne({
+            $or: [{ username: { $in: usernames } }, { email: { $in: emails } }]
         });
-        if (existingUser) {
+
+        if (existingUsers) {
             return res.status(400).json({
-                message: 'User already exists with this username or email'
+                message: 'One or more users already exist with the same username or email'
             });
         }
 
-        // ✅ Hash password and create new user
-        let hashpassword = await bcrypt.hash(password, 10);
-        let userdetails = await usermodel.create({ username, password: hashpassword, email });
+        // Hash passwords and prepare for insertion
+        const usersToInsert = await Promise.all(users.map(async (user) => {
+            const hashpassword = await bcrypt.hash(user.password, 10);
+            return {
+                username: user.username,
+                password: hashpassword,
+                email: user.email
+            };
+        }));
+
+        const result = await usermodel.insertMany(usersToInsert);
+
         res.status(201).json({
-            message: 'User registered successfully',
+            message: 'User(s) registered successfully',
+            count: result.length
         });
 
     } catch (error) {
