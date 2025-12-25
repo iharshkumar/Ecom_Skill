@@ -1,16 +1,28 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Products from './components/Products';
+import Home from './pages/Home';
+import Cart from './pages/Cart';
+import Orders from './pages/Orders';
+import Footer from './components/Footer';
+import { CartProvider } from './context/CartContext';
 import './App.css';
 
 function App() {
   return (
-    <div className="app">
-      <Navbar />
-      <main>
-        <Products />
-      </main>
-    </div>
+    <Router>
+      <CartProvider>
+        <div className="app">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/orders" element={<Orders />} />
+          </Routes>
+          <Footer />
+        </div>
+      </CartProvider>
+    </Router>
   );
 }
 

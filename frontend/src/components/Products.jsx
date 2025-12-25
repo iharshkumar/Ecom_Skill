@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 const Products = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
+
+    const { addToCart } = useCart();
 
     useEffect(() => {
         fetch('http://localhost:3000/products')
@@ -24,6 +29,13 @@ const Products = () => {
             });
     }, []);
 
+    const handleAddToCart = (product) => {
+        addToCart(product);
+        // Optional: Show a toast or notification
+        // Redirect to cart page
+        navigate('/cart');
+    };
+
     if (loading) return <div className="loading">Loading products...</div>;
     if (error) return <div className="error">{error}</div>;
 
@@ -36,12 +48,27 @@ const Products = () => {
                         <img src={product.image} alt={product.title} className="product-image" />
                         <div className="product-info">
                             <h3>{product.title}</h3>
-                            <p className="price">${product.price}</p>
+
                             <div className="rating">
-                                <span>⭐ {product.rating?.rate}</span>
-                                <span>({product.rating?.count} reviews)</span>
+                                <span>{product.rating?.rate} ★</span>
                             </div>
-                            <button className="add-to-cart">Add to Cart</button>
+                            <span className="rating-count">({product.rating?.count})</span>
+
+                            <div className="price-row">
+                                <span className="price">${product.price}</span>
+
+                                {/* Simulating a discount for visual appeal */}
+
+                                <span className="price-old">${(product.price * 1.2).toFixed(2)}</span>
+                                <span className="discount">20% off</span>
+                            </div>
+
+                            <button
+                                className="add-to-cart"
+                                onClick={() => handleAddToCart(product)}
+                            >
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 ))}

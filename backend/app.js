@@ -146,15 +146,15 @@ let usermodel = new mongoose.model('users', userschema);
 
 app.post('/products', async (req, res) => {
     try {
-        const { title, price, rating, image } = req.body;
-        let productdata = await productmodel.create({ title, price, rating, image });
+        // Pass req.body directly to support both single object and array of objects
+        let productdata = await productmodel.insertMany(req.body);
         res.status(201).json({
-            message: 'Product created successfully',
-
+            message: 'Product(s) created successfully',
+            data: productdata
         });
     }
     catch (error) {
-        res.json({
+        res.status(500).json({
             message: error.message
         });
     }
