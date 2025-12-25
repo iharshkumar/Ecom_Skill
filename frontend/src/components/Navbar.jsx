@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
     const { getCartCount } = useCart();
+    const { user, logout } = useAuth();
     return (
         <nav className="navbar">
             <div className="navbar-container">
@@ -55,8 +57,17 @@ const Navbar = () => {
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <span className="nav-icon">👤</span>
-                        <span>Login</span>
+                        {user ? (
+                            <div className="nav-link" onClick={logout} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <span className="nav-icon">👤</span>
+                                <span>Logout ({user.username})</span>
+                            </div>
+                        ) : (
+                            <Link to="/login" className="nav-link">
+                                <span className="nav-icon">👤</span>
+                                <span>Login</span>
+                            </Link>
+                        )}
                     </li>
                 </ul>
             </div>
