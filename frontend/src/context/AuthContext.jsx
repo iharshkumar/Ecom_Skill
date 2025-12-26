@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (username, password) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://ecom-skill-2.onrender.com'}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (username, email, password) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/register`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://ecom-skill-2.onrender.com'}/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

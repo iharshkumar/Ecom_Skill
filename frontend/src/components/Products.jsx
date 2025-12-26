@@ -11,7 +11,7 @@ const Products = () => {
     const { addToCart } = useCart();
 
     useEffect(() => {
-        const apiUrl = `${import.meta.env.VITE_API_URL}/products`;
+        const apiUrl = `${import.meta.env.VITE_API_URL || 'https://ecom-skill-2.onrender.com'}/products`;
         console.log("Fetching from:", apiUrl);
         fetch(apiUrl)
             .then(response => {
