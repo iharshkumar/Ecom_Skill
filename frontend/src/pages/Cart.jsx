@@ -1,9 +1,22 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
-import { Link } from 'react-router-dom';
+import { useOrders } from '../context/OrderContext';
+import { useToast } from '../context/ToastContext';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Cart = () => {
-    const { cartItems, removeFromCart, updateQuantity, getCartTotal } = useCart();
+    const { cartItems, removeFromCart, updateQuantity, getCartTotal, clearCart } = useCart();
+    const { createOrder } = useOrders();
+    const { showSuccess } = useToast();
+    const navigate = useNavigate();
+
+    const handleCheckout = () => {
+        const total = getCartTotal();
+        const order = createOrder(cartItems, total);
+        clearCart();
+        showSuccess('Order placed successfully! 🎉');
+        navigate('/order-success', { state: { orderId: order.id } });
+    };
 
     if (cartItems.length === 0) {
         return (
@@ -76,7 +89,7 @@ const Cart = () => {
                         <span>Total</span>
                         <span>₹{getCartTotal().toFixed(2)}</span>
                     </div>
-                    <button>
+                    <button onClick={handleCheckout}>
                         Proceed to Checkout
                     </button>
                 </div>

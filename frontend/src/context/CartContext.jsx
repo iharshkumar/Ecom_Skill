@@ -1,22 +1,40 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 
 const CartContext = createContext();
 
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
-    // Initialize cart from localStorage if available, else empty array
-    const [cartItems, setCartItems] = useState(() => {
-        const localData = localStorage.getItem('cartItems');
-        return localData ? JSON.parse(localData) : [];
-    });
+    const { user } = useAuth();
+    const [cartItems, setCartItems] = useState([]);
 
-    // Sync with localStorage
+    // Load cart for current user
     useEffect(() => {
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }, [cartItems]);
+        if (user) {
+            const userCartKey = `cart_${user.username}`;
+            const savedCart = localStorage.getItem(userCartKey);
+            setCartItems(savedCart ? JSON.parse(savedCart) : []);
+        } else {
+            // Clear cart when no user is logged in
+            setCartItems([]);
+        }
+    }, [user]);
+
+    // Save cart whenever it changes
+    useEffect(() => {
+        if (user) {
+            const userCartKey = `cart_${user.username}`;
+            localStorage.setItem(userCartKey, JSON.stringify(cartItems));
+        }
+    }, [cartItems, user]);
 
     const addToCart = (product) => {
+        if (!user) {
+            alert('Please login to add items to cart');
+            return;
+        }
+
         setCartItems(prevItems => {
             const existingItem = prevItems.find(item => item._id === product._id);
             if (existingItem) {
@@ -53,6 +71,10 @@ export const CartProvider = ({ children }) => {
         return cartItems.reduce((count, item) => count + item.quantity, 0);
     };
 
+    const clearCart = () => {
+        setCartItems([]);
+    };
+
     return (
         <CartContext.Provider value={{
             cartItems,
@@ -60,7 +82,8 @@ export const CartProvider = ({ children }) => {
             removeFromCart,
             updateQuantity,
             getCartTotal,
-            getCartCount
+            getCartCount,
+            clearCart
         }}>
             {children}
         </CartContext.Provider>

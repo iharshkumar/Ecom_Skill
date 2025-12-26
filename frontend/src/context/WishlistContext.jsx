@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 
 const WishlistContext = createContext();
 
@@ -11,27 +12,44 @@ export const useWishlist = () => {
 };
 
 export const WishlistProvider = ({ children }) => {
+    const { user } = useAuth();
     const [wishlist, setWishlist] = useState([]);
 
-    // Load wishlist from localStorage on mount
+    // Load wishlist for current user
     useEffect(() => {
-        const savedWishlist = localStorage.getItem('wishlist');
-        if (savedWishlist) {
-            try {
-                setWishlist(JSON.parse(savedWishlist));
-            } catch (error) {
-                console.error('Error loading wishlist:', error);
+        if (user) {
+            const userWishlistKey = `wishlist_${user.username}`;
+            const savedWishlist = localStorage.getItem(userWishlistKey);
+            if (savedWishlist) {
+                try {
+                    setWishlist(JSON.parse(savedWishlist));
+                } catch (error) {
+                    console.error('Error loading wishlist:', error);
+                    setWishlist([]);
+                }
+            } else {
                 setWishlist([]);
             }
+        } else {
+            // Clear wishlist when no user is logged in
+            setWishlist([]);
         }
-    }, []);
+    }, [user]);
 
-    // Save wishlist to localStorage whenever it changes
+    // Save wishlist whenever it changes
     useEffect(() => {
-        localStorage.setItem('wishlist', JSON.stringify(wishlist));
-    }, [wishlist]);
+        if (user) {
+            const userWishlistKey = `wishlist_${user.username}`;
+            localStorage.setItem(userWishlistKey, JSON.stringify(wishlist));
+        }
+    }, [wishlist, user]);
 
     const addToWishlist = (product) => {
+        if (!user) {
+            alert('Please login to add items to wishlist');
+            return;
+        }
+
         setWishlist(prev => {
             // Check if product already exists
             const exists = prev.find(item => item._id === product._id);
