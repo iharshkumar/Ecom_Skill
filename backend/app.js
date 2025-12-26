@@ -84,7 +84,9 @@ app.use(express.json());
 
 
 //cors middleware
-app.use(cors())
+app.use(cors({
+    origin: 'http://localhost:5173'
+}));
 
 //s2
 async function connection() {
