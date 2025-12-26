@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
@@ -7,6 +8,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const { login } = useAuth();
+    const { showSuccess, showError } = useToast();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -14,8 +16,10 @@ const Login = () => {
         setError('');
         const result = await login(username, password);
         if (result.success) {
+            showSuccess('Login successful! Welcome back.');
             navigate('/');
         } else {
+            showError(result.message);
             setError(result.message);
         }
     };

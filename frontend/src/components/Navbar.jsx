@@ -1,17 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
     const { getCartCount } = useCart();
-    const { user, logout } = useAuth();
+    const { getWishlistCount } = useWishlist();
+    const { user } = useAuth();
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+
+    // Handle scroll effect
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Close mobile menu when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (mobileMenuOpen && !e.target.closest('.navbar-links') && !e.target.closest('.mobile-menu-toggle')) {
+                setMobileMenuOpen(false);
+            }
+        };
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, [mobileMenuOpen]);
+
     return (
-        <nav className="navbar">
+        <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
             <div className="navbar-container">
-                <div className="navbar-brand">
-                    <span className="brand-logo">Desi</span>Cart
-                </div>
+                <Link to="/" className="navbar-brand">
+                    <div className="brand-content">
+                        <div className="brand-name">DesiCart</div>
+                        <div className="brand-tagline">Explore <span className="tagline-plus">Desi</span> ✨</div>
+                    </div>
+                </Link>
 
                 <div className="navbar-search">
                     <input
@@ -24,33 +52,48 @@ const Navbar = () => {
                     </button>
                 </div>
 
-                <ul className="navbar-links">
+                <button
+                    className="mobile-menu-toggle"
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    aria-label="Toggle menu"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <ul className={`navbar-links ${mobileMenuOpen ? 'active' : ''}`}>
                     <li className="nav-item">
-                        <Link to="/" className="nav-link">
+                        <Link to="/" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
                             <span className="nav-icon">🏠</span>
                             <span>Home</span>
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link to="/orders" className="nav-link">
+                        <Link to="/orders" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
                             <span className="nav-icon">📦</span>
                             <span>Orders</span>
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link to="/cart" className="nav-link">
+                        <Link to="/wishlist" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
+                            <span className="nav-icon">❤️</span>
+                            <span>Wishlist</span>
+                            {getWishlistCount() > 0 && (
+                                <span className="cart-badge" style={{
+                                    backgroundColor: '#ff4081'
+                                }}>
+                                    {getWishlistCount()}
+                                </span>
+                            )}
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link to="/cart" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
                             <span className="nav-icon">🛒</span>
                             <span>Cart</span>
                             {getCartCount() > 0 && (
-                                <span className="cart-badge" style={{
-                                    backgroundColor: 'red',
-                                    color: 'white',
-                                    borderRadius: '50%',
-                                    padding: '2px 6px',
-                                    fontSize: '0.8em',
-                                    marginLeft: '5px',
-                                    verticalAlign: 'top'
-                                }}>
+                                <span className="cart-badge">
                                     {getCartCount()}
                                 </span>
                             )}
@@ -58,12 +101,12 @@ const Navbar = () => {
                     </li>
                     <li className="nav-item">
                         {user ? (
-                            <div className="nav-link" onClick={logout} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <Link to="/profile" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
                                 <span className="nav-icon">👤</span>
-                                <span>Logout ({user.username})</span>
-                            </div>
+                                <span>{user.username}</span>
+                            </Link>
                         ) : (
-                            <Link to="/login" className="nav-link">
+                            <Link to="/login" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
                                 <span className="nav-icon">👤</span>
                                 <span>Login</span>
                             </Link>

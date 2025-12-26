@@ -4,9 +4,14 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Orders from './pages/Orders';
+import Profile from './pages/Profile';
+import Wishlist from './pages/Wishlist';
 import Footer from './components/Footer';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
+import { ToastProvider } from './context/ToastContext';
+import { WishlistProvider } from './context/WishlistContext';
+import ToastContainer from './components/Toast';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import './App.css';
@@ -15,19 +20,26 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <CartProvider>
-          <div className="app">
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/orders" element={<Orders />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-            </Routes>
-            <Footer />
-          </div>
-        </CartProvider>
+        <ToastProvider>
+          <WishlistProvider>
+            <CartProvider>
+              <div className="app">
+                <Navbar />
+                <ToastContainer />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/orders" element={<Orders />} />
+                  <Route path="/wishlist" element={<Wishlist />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                </Routes>
+                <Footer />
+              </div>
+            </CartProvider>
+          </WishlistProvider>
+        </ToastProvider>
       </AuthProvider>
     </Router>
   );

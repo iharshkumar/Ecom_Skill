@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import { useNavigate, Link } from 'react-router-dom';
 
 const Register = () => {
@@ -8,6 +9,7 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const { register } = useAuth();
+    const { showSuccess, showError } = useToast();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -15,8 +17,10 @@ const Register = () => {
         setError('');
         const result = await register(username, email, password);
         if (result.success) {
-            navigate('/login'); // Redirect to login after successful registration
+            showSuccess('Registration successful! Please login to continue.');
+            navigate('/login');
         } else {
+            showError(result.message);
             setError(result.message);
         }
     };
