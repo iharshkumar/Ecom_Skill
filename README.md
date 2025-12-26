@@ -134,33 +134,6 @@ collegebackend/
 - MongoDB (local or Atlas)
 - npm or yarn
 
-### Backend Setup
-
-1. **Navigate to backend directory**
-```bash
-cd backend
-```
-
-2. **Install dependencies**
-```bash
-npm install
-```
-
-3. **Create `.env` file** (optional)
-```env
-PORT=3000
-MONGODB_URI=mongodb://localhost:27017/ecommerce
-JWT_SECRET=your_jwt_secret_key
-```
-
-4. **Start the server**
-```bash
-node app.js
-```
-
-Server will run on `http://localhost:3000`
-
-### Frontend Setup
 
 1. **Navigate to frontend directory**
 ```bash
@@ -218,29 +191,6 @@ Frontend will run on `http://localhost:5173`
 ### Products
 - `GET /products` - Get all products
 - `POST /products` - Add new product (admin)
-
-## 🎨 Design System
-
-### Color Palette
-```css
---primary: #6366f1        /* Indigo */
---primary-dark: #4f46e5   /* Dark Indigo */
---secondary: #ec4899      /* Pink */
---success: #10b981        /* Green */
---text-primary: #1f2937   /* Dark Gray */
---text-secondary: #6b7280 /* Medium Gray */
---bg-primary: #ffffff     /* White */
---bg-secondary: #f9fafb   /* Light Gray */
-```
-
-### Typography
-- Font Family: Inter, system-ui, sans-serif
-- Responsive font sizes using CSS variables
-- Font weights: 400, 500, 600, 700, 800
-
-### Spacing
-- Consistent spacing scale using CSS variables
-- `--space-1` to `--space-10`
 
 ## 🔐 User-Specific Data
 
@@ -302,10 +252,6 @@ npm install
 ## 📄 License
 
 This project is open source and available under the MIT License.
-
-## 👨‍💻 Author
-
-Developed with ❤️ by Harsh Kumar
 
 ## 🤝 Contributing
 
