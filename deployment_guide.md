@@ -55,3 +55,14 @@ The backend runs on proper `PORT` provided by the host.
     }
   }));
   ```
+
+## 5. Troubleshooting
+
+### "Failed to load resource: the server responded with a status of 404"
+**Cause:** The frontend cannot find the backend. This usually means `VITE_API_URL` is missing or incorrect in your deployed frontend environment.
+**Fix:**
+1.  Go to your Frontend Dashboard (e.g., Vercel).
+2.  Check **Environment Variables**.
+3.  Ensure `VITE_API_URL` is set to your **Backend URL** (e.g., `https://your-api.onrender.com`).
+4.  **Re-deploy** your frontend for the change to take effect.
+

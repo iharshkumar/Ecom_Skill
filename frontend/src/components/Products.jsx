@@ -11,7 +11,9 @@ const Products = () => {
     const { addToCart } = useCart();
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_API_URL}/products`)
+        const apiUrl = `${import.meta.env.VITE_API_URL}/products`;
+        console.log("Fetching from:", apiUrl);
+        fetch(apiUrl)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

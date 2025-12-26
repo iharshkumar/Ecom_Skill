@@ -83,10 +83,7 @@ app.use(limiter);
 app.use(express.json());
 
 
-//cors middleware
-app.use(cors({
-    origin: 'http://localhost:5173'
-}));
+app.use(cors()); // Allow all origins for now to ensure production works
 
 //s2
 async function connection() {
