@@ -189,6 +189,7 @@ npm run dev
 
 Frontend will run on `http://localhost:5173`
 
+
 ## 🌐 Deployment
 
 ### Backend (Render)
@@ -304,7 +305,7 @@ This project is open source and available under the MIT License.
 
 ## 👨‍💻 Author
 
-Developed with ❤️ by Your Name
+Developed with ❤️ by Harsh Kumar
 
 ## 🤝 Contributing
 
@@ -312,7 +313,7 @@ Contributions, issues, and feature requests are welcome!
 
 ## 📞 Support
 
-For support, email your-email@example.com or create an issue in the repository.
+For support, email srivastavaharsh1108@gmail.com or create an issue in the repository.
 
 ---
 
