@@ -18,7 +18,7 @@ const ProductDetails = () => {
 
     useEffect(() => {
         // Backend API URL
-        fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/products`)
+        fetch(`${import.meta.env.VITE_API_URL || 'https://ecom-skill-2.onrender.com'}/products`)
             .then(res => res.json())
             .then(data => {
                 const found = data.find(p => p._id === id);
