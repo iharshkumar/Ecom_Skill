@@ -142,7 +142,7 @@ const Profile = () => {
             <div className="profile-content">
                 {!showPasswordForm ? (
                     <div className="profile-details">
-                        <h2>Personal Information</h2>
+                        <h2 className="!text-[30px] !font-[500]">Personal Information</h2>
                         <div className="info-card">
                             <div className="info-row">
                                 <label>Username</label>
@@ -154,7 +154,7 @@ const Profile = () => {
                             </div>
                         </div>
 
-                        <h2>Settings</h2>
+                        <h2 className="!text-[30px] !font-[500]">Settings</h2>
                         <div className="settings-card">
                             <div className="setting-item">
                                 <div className="setting-header">
@@ -164,7 +164,7 @@ const Profile = () => {
                                         <p>Choose your preferred language</p>
                                     </div>
                                 </div>
-                                <div className="language-options">
+                                <div className="language-options !gap-2">
                                     {['English', 'Hindi', 'Spanish', 'French'].map(lang => (
                                         <button
                                             key={lang}
@@ -204,7 +204,7 @@ const Profile = () => {
                     </div>
                 ) : (
                     <div className="password-change-form">
-                        <h2>Change Password</h2>
+                        <div className='!text-[30px] !font-[500] !mt-3 !mb-4'>Change Password</div>
                         <form onSubmit={handlePasswordChange}>
                             <div className="form-group">
                                 <label>Current Password</label>
@@ -245,13 +245,13 @@ const Profile = () => {
                                     placeholder="Confirm new password"
                                 />
                             </div>
-                            <div className="form-actions">
-                                <button type="submit" className="btn-primary">
+                            <div className="form-actions flex justify-between">
+                                <button className="btn btn-primary checkout-btn">
                                     Update Password
                                 </button>
                                 <button
                                     type="button"
-                                    className="btn-secondary"
+                                    className="btn btn-primary checkout-btn"
                                     onClick={() => setShowPasswordForm(false)}
                                 >
                                     Cancel

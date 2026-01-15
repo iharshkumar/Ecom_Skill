@@ -23,7 +23,7 @@ const Cart = () => {
             <div className="cart-page">
                 <div className="empty-state">
                     <div className="empty-icon">🛒</div>
-                    <h1>Your Cart is Empty</h1>
+                    <div className="text-[30px] font-bold">Your Cart is Empty</div>
                     <p>Looks like you haven't added anything to your cart yet.</p>
                     <Link to="/">
                         <button className="btn btn-primary checkout-btn">
@@ -89,7 +89,7 @@ const Cart = () => {
                         <span>Total</span>
                         <span>₹{getCartTotal().toFixed(2)}</span>
                     </div>
-                    <button onClick={handleCheckout}>
+                    <button onClick={handleCheckout} className='btn btn-primary hover:!bg-red-500'>
                         Proceed to Checkout
                     </button>
                 </div>

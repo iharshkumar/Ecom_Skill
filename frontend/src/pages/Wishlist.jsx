@@ -29,10 +29,10 @@ const Wishlist = () => {
                     <h2>Your Wishlist is Empty</h2>
                     <p>Add items you love to your wishlist. Review them anytime and easily move them to cart.</p>
                     <button
-                        className="btn-primary"
+                        className="btn btn-primary"
                         onClick={() => navigate('/')}
                     >
-                        Continue Shopping
+                        Add To Wishlist
                     </button>
                 </div>
             </div>

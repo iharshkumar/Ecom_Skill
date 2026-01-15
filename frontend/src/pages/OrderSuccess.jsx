@@ -89,13 +89,13 @@ const OrderSuccess = () => {
 
                 <div className="success-actions">
                     <button
-                        className="btn btn-primary"
+                        className="btn btn-primary hover:!bg-red-500 !rounded-full"
                         onClick={() => navigate('/orders')}
                     >
                         View All Orders
                     </button>
                     <button
-                        className="btn btn-outline"
+                        className="btn btn-outline hover:!text-black hover:!bg-gray-100 hover:!bg-gray-200 !rounded-full"
                         onClick={() => navigate('/')}
                     >
                         Continue Shopping

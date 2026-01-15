@@ -1,58 +1,56 @@
-:root {
-  /* Brand Colors - Inspired by Flipkart/Amazon mix for a premium blue theme */
-  --primary: #2874f0;
-  /* Vibrant Blue */
-  --primary-dark: #1e5cc2;
-  --secondary: #fb641b;
-  /* Call to Action Orange */
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
 
-  /* Neutrals */
-  --bg-body: #f1f3f6;
-  --bg-white: #ffffff;
-  --text-main: #212121;
-  --text-light: #878787;
-  --border-light: #f0f0f0;
+@layer base {
+  body {
+    background-color: #f1f3f6;
+    color: #212121;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+}
 
-  /* Shadows */
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
-  --shadow-hover: 0 8px 16px rgba(0, 0, 0, 0.15);
+/* Custom Components */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
 
-  /* Spacing */
-  --container-width: 1300px;
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 body {
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: var(--bg-body);
-  color: var(--text-main);
+  background-color: #f1f3f6;
+  color: #212121;
   -webkit-font-smoothing: antialiased;
 }
 
 /* Utilities */
 .container {
-  max-width: var(--container-width);
+  max-width: 1300px;
   margin: 0 auto;
   padding: 0 1rem;
 }
 
 /* Navbar */
 .navbar {
-  background-color: var(--primary);
+  background-color: #d0d79a;
   color: white;
   padding: 0.8rem 0;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 .navbar-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: var(--container-width);
+  max-width: 1300px;
   margin: 0 auto;
   padding: 0 1rem;
 }
@@ -75,12 +73,6 @@ body {
 .navbar-search {
   flex: 1;
   max-width: 600px;
-  margin: 0 2rem;
-  display: flex;
-  border-radius: 4px;
-  background: white;
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
 }
 
 .search-input {
@@ -92,16 +84,16 @@ body {
 }
 
 .search-btn {
-  background: white;
+  background: #0d3fe4 !important;
   border: none;
   padding: 0 1rem;
   cursor: pointer;
-  color: var(--primary);
+  color: #e4e5e7 !important;
   font-weight: 600;
 }
 
 .search-btn:hover {
-  background-color: #f9f9f9;
+  background-color: #0d3fe4 !important;
 }
 
 /* Nav Links */
@@ -130,12 +122,12 @@ body {
 
 /* Hero Section */
 .hero-section {
-  background: white;
+  background: white !important;
   padding: 1rem;
   margin: 1rem auto;
-  max-width: var(--container-width);
+  max-width: 1300px;
   border-radius: 4px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -150,13 +142,13 @@ body {
 
 .hero-content h1 {
   font-size: 2.5rem;
-  color: var(--text-main);
+  color: #212121;
   margin-bottom: 1rem;
 }
 
 .hero-content p {
   font-size: 1.2rem;
-  color: var(--text-light);
+  color: #878787;
   margin-bottom: 2rem;
 }
 
@@ -174,35 +166,45 @@ body {
 }
 
 .cta-button {
-  background-color: var(--secondary);
-  color: white;
+  background-color: #fb641b !important;
+  color: white !important;
   border: none;
   padding: 0.8rem 2rem;
   font-size: 1rem;
   font-weight: 700;
   border-radius: 2px;
   cursor: pointer;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   transition: all 0.2s;
 }
 
 .cta-button:hover {
-  background-color: #e65100;
-  box-shadow: var(--shadow-md);
+  background-color: #f39000 !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12) !important;
 }
 
 /* Products Layout */
 main {
-  max-width: var(--container-width);
+  max-width: 1450px;
   margin: 1rem auto;
   padding: 0 1rem;
 }
 
-.products-container h2 {
+.section-title {
   font-size: 1.5rem;
+  font-weight: 700;
   margin-bottom: 1.5rem;
-  border-bottom: 1px solid var(--border-light);
+  border-bottom: 1px solid #f0f0f0;
   padding-bottom: 0.5rem;
+}
+
+.category-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
 }
 
 .products-grid {
@@ -211,7 +213,6 @@ main {
   gap: 1rem;
 }
 
-/* Product Card */
 .product-card {
   background: white;
   border-radius: 4px;
@@ -224,8 +225,8 @@ main {
 }
 
 .product-card:hover {
-  box-shadow: var(--shadow-hover);
-  border-color: var(--border-light);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  border-color: #f0f0f0;
 }
 
 .product-image {
@@ -233,6 +234,10 @@ main {
   height: 200px;
   object-fit: contain;
   margin-bottom: 1rem;
+}
+
+.cart-btn {
+  background-color: #ff5252 !important;
 }
 
 .product-info {
@@ -267,7 +272,7 @@ main {
 }
 
 .rating-count {
-  color: var(--text-light);
+  color: #878787;
   font-size: 0.8rem;
   margin-left: 0.5rem;
   font-weight: 500;
@@ -283,12 +288,12 @@ main {
 .price {
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--text-main);
+  color: #212121;
 }
 
 .price-old {
   text-decoration: line-through;
-  color: var(--text-light);
+  color: #878787;
   font-size: 0.9rem;
 }
 
@@ -296,24 +301,6 @@ main {
   color: #388e3c;
   font-size: 0.85rem;
   font-weight: 700;
-}
-
-.add-to-cart {
-  width: 100%;
-  padding: 0.8rem;
-  margin-top: 0.5rem;
-  background-color: #ff9f00;
-  /* Flipkart yellow/orange */
-  color: white;
-  border: none;
-  font-weight: 600;
-  border-radius: 2px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.add-to-cart:hover {
-  background-color: #f39000;
 }
 
 /* Footer */
@@ -329,7 +316,7 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 2rem;
-  max-width: var(--container-width);
+  max-width: 1300px;
   margin: 0 auto;
   padding: 0 2rem;
 }
@@ -377,7 +364,7 @@ main {
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-  color: var(--text-light);
+  color: #878787;
 }
 
 .error {
@@ -428,14 +415,14 @@ main {
   justify-content: center;
   align-items: center;
   min-height: 80vh;
-  background-color: var(--bg-body);
+  background-color: #f1f3f6;
 }
 
 .auth-card {
   background: white;
   padding: 2.5rem;
   border-radius: 8px;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
   width: 100%;
   max-width: 400px;
   text-align: center;
@@ -443,12 +430,12 @@ main {
 
 .auth-header h2 {
   font-size: 2rem;
-  color: var(--primary);
+  color: #c62828 !important;
   margin-bottom: 0.5rem;
 }
 
 .auth-header p {
-  color: var(--text-light);
+  color: #c62828 !important;
   margin-bottom: 2rem;
   font-size: 0.95rem;
 }
@@ -462,7 +449,7 @@ main {
 .form-group input {
   width: 100%;
   padding: 0.8rem 1rem;
-  border: 1px solid var(--border-light);
+  border: 1px solid #f0f0f0;
   border-radius: 4px;
   font-size: 1rem;
   transition: border-color 0.2s;
@@ -472,23 +459,23 @@ main {
 
 .form-group input:focus {
   outline: none;
-  border-color: var(--primary);
+  border-color: #ffffff !important;
 }
 
 .auth-btn {
-  background-color: var(--secondary);
+  background-color: #c62828 !important;
   color: white;
   border: none;
-  padding: 0.9rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.2s;
+  padding: 0.9rem !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  transition: background 0.2s !important;
 }
 
 .auth-btn:hover {
-  background-color: #e65100;
+  background-color: #e65100 !important;
 }
 
 .auth-footer {
@@ -497,7 +484,7 @@ main {
 }
 
 .auth-footer a {
-  color: var(--primary);
+  color: #c62828;
   text-decoration: none;
   font-weight: 500;
 }
@@ -514,4 +501,28 @@ main {
   margin-bottom: 1rem;
   font-size: 0.9rem;
   border: 1px solid #ffcdd2;
+}
+
+/* CRITICAL SWIPER FIXES */
+.swiper {
+  width: 100% !important;
+  height: 100%;
+  overflow: hidden;
+}
+
+.swiper-slide {
+  width: auto !important;
+  height: auto;
+  display: flex;
+}
+
+.swiper-wrapper {
+  height: auto !important;
+}
+
+/* Protect main container */
+main {
+  display: block !important;
+  width: 100% !important;
+  overflow: hidden;
 }

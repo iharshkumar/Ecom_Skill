@@ -8,7 +8,7 @@
    --primary-light: #818cf8;
    --secondary: #ec4899;
    --secondary-dark: #db2777;
-   --success: #10b981;
+   --success: #0dfb35;
    --warning: #f59e0b;
    --error: #ef4444;
    --info: #3b82f6;
@@ -229,36 +229,36 @@ select {
 }
 
 .btn-primary {
-   background: var(--primary);
-   color: var(--text-white);
+   background: #000000 !important;
+   color: var(--text-white) !important;
 }
 
 .btn-primary:hover {
-   background: var(--primary-dark);
+   background: #000000 !important;
    transform: translateY(-2px);
    box-shadow: var(--shadow-lg);
 }
 
 .btn-secondary {
-   background: var(--secondary);
-   color: var(--text-white);
+   background: #000000 !important;
+   color: var(--text-white) !important;
 }
 
 .btn-secondary:hover {
-   background: var(--secondary-dark);
+   background: #000000 !important;
    transform: translateY(-2px);
    box-shadow: var(--shadow-lg);
 }
 
 .btn-outline {
-   background: transparent;
-   border: 2px solid var(--primary);
-   color: var(--primary);
+   background: transparent !important;
+   border: 2px solid #000000 !important;
+   color: #000000 !important;
 }
 
 .btn-outline:hover {
-   background: var(--primary);
-   color: var(--text-white);
+   background: #000000 !important;
+   color: #ffffff !important;
 }
 
 /* ===== ANIMATIONS ===== */
@@ -1232,7 +1232,7 @@ main {
 
 .checkout-btn {
    padding: var(--space-4) var(--space-8) !important;
-   background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
+   background: #000000 !important;
    color: var(--text-white) !important;
    border-radius: var(--border-radius-lg) !important;
    font-weight: 600 !important;
@@ -1748,7 +1748,7 @@ main {
 .password-change-form h2 {
    font-size: var(--text-3xl);
    margin-bottom: var(--space-8);
-   background: linear-gradient(135deg, var(--primary), var(--secondary));
+   background: #000000;
    -webkit-background-clip: text;
    -webkit-text-fill-color: transparent;
    background-clip: text;
@@ -1818,6 +1818,7 @@ main {
 }
 
 .language-options {
+
    display: flex;
    gap: var(--space-3);
    flex-wrap: wrap;
@@ -1826,7 +1827,7 @@ main {
 .language-btn {
    padding: var(--space-3) var(--space-5);
    border: 2px solid var(--border-color);
-   background: var(--bg-primary);
+   background: #ffffff !important;
    border-radius: var(--border-radius-md);
    font-size: var(--text-sm);
    font-weight: 500;
@@ -1835,14 +1836,14 @@ main {
 }
 
 .language-btn:hover {
-   border-color: var(--primary);
-   color: var(--primary);
+   border-color: #000000 !important;
+   color: #000000 !important;
 }
 
 .language-btn.active {
-   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-   color: var(--text-white);
-   border-color: var(--primary);
+   background: #000000 !important;
+   color: #ffffff !important;
+   border-color: #000000 !important;
 }
 
 .notification-toggles {
@@ -1864,7 +1865,7 @@ main {
    width: 20px;
    height: 20px;
    cursor: pointer;
-   accent-color: var(--primary);
+   accent-color: #000000 !important;
 }
 
 .password-change-form {
@@ -1890,12 +1891,12 @@ main {
    border-radius: var(--border-radius-md);
    font-size: var(--text-base);
    transition: all var(--transition-base);
-   background: var(--bg-secondary);
+   background: #ffffff !important;
 }
 
 .password-change-form input:focus {
-   border-color: var(--primary);
-   background: var(--bg-primary);
+   border-color: #ffffff !important;
+   background: #ffffff !important;
    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
@@ -1989,7 +1990,7 @@ main {
 .auth-btn {
    width: 100%;
    padding: var(--space-4);
-   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+   background: #000000 !important;
    color: var(--text-white);
    border-radius: var(--border-radius-md);
    font-size: var(--text-lg);
@@ -2006,17 +2007,17 @@ main {
    text-align: center;
    margin-top: var(--space-6);
    padding-top: var(--space-6);
-   border-top: 1px solid var(--border-color);
+   border-top: 1px solid #000000 !important;
 }
 
 .auth-footer a {
-   color: var(--primary);
+   color: #000000 !important;
    font-weight: 600;
    transition: color var(--transition-base);
 }
 
 .auth-footer a:hover {
-   color: var(--primary-dark);
+   color: #000000 !important;
    text-decoration: underline;
 }
 
@@ -3218,5 +3219,112 @@ footer {
    .products-grid {
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
       gap: var(--space-4);
+   }
+}
+
+/* ===== TOAST NOTIFICATIONS ===== */
+.toast-container {
+   position: fixed;
+   bottom: 2rem;
+   left: 50%;
+   transform: translateX(-50%);
+   z-index: var(--z-fixed);
+   display: flex;
+   flex-direction: column;
+   gap: var(--space-3);
+   pointer-events: none;
+}
+
+.toast {
+   pointer-events: auto;
+   background: rgba(255, 255, 255, 0.95);
+   backdrop-filter: blur(10px);
+   -webkit-backdrop-filter: blur(10px);
+   color: var(--text-primary);
+   padding: var(--space-4) var(--space-6);
+   border-radius: var(--border-radius-lg);
+   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+   display: flex;
+   align-items: center;
+   gap: var(--space-4);
+   min-width: 320px;
+   max-width: 90vw;
+   animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+   border: 1px solid var(--border-color);
+}
+
+.toast-success {
+   border-left: 4px solid var(--success);
+}
+
+.toast-error {
+   border-left: 4px solid var(--error);
+}
+
+.toast-info {
+   border-left: 4px solid var(--info);
+}
+
+.toast-warning {
+   border-left: 4px solid var(--warning);
+}
+
+.toast-icon {
+   font-size: 1.25rem;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.toast-success .toast-icon {
+   color: var(--success);
+}
+
+.toast-error .toast-icon {
+   color: var(--error);
+}
+
+.toast-info .toast-icon {
+   color: var(--info);
+}
+
+.toast-warning .toast-icon {
+   color: var(--warning);
+}
+
+.toast-message {
+   flex: 1;
+   font-weight: 500;
+   font-size: var(--text-sm);
+   color: var(--text-primary);
+}
+
+.toast-close {
+   background: transparent;
+   border: none;
+   color: var(--text-tertiary);
+   font-size: 1.5rem;
+   cursor: pointer;
+   line-height: 1;
+   padding: 0;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   transition: color 0.2s;
+}
+
+.toast-close:hover {
+   color: var(--text-primary);
+}
+
+@keyframes slideUpFade {
+   from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+   }
+
+   to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
    }
 }

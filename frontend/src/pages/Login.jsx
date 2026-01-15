@@ -28,8 +28,8 @@ const Login = () => {
         <div className="auth-container">
             <div className="auth-card">
                 <div className="auth-header">
-                    <h2>Login</h2>
-                    <p>Get access to your Orders, Wishlist and Recommendations</p>
+                    <div className='text-[40px] font-bold'>Login</div>
+                    <p className='text-[15px] !text-gray-500'>Get access to your Orders, Wishlist and Recommendations</p>
                 </div>
                 {error && <div className="auth-error">{error}</div>}
                 <form onSubmit={handleSubmit} className="auth-form">
@@ -54,7 +54,7 @@ const Login = () => {
                     <button type="submit" className="auth-btn">Login</button>
                 </form>
                 <div className="auth-footer">
-                    <Link to="/register">New here? Sign up</Link>
+                    <Link to="/register" className='text-[15px] !text-gray-500'>New here? Sign up</Link>
                 </div>
             </div>
         </div>

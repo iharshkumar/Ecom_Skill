@@ -101,6 +101,7 @@ let productschema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    originalPrice: Number,
     rating: {
         rate: Number,
         count: Number
@@ -108,7 +109,30 @@ let productschema = new mongoose.Schema({
     image: {
         type: String,
         required: true
-    }
+    },
+    images: [String],
+    category: {
+        type: String,
+        default: 'General'
+    },
+    brand: {
+        type: String,
+        default: 'Generic'
+    },
+    description: String,
+    sizes: [String],
+    reviews: [{
+        user: String,
+        rating: Number,
+        comment: String,
+        date: { type: Date, default: Date.now }
+    }],
+    questions: [{
+        user: String,
+        question: String,
+        answer: String,
+        date: { type: Date, default: Date.now }
+    }]
 });
 
 
@@ -298,14 +322,16 @@ app.get('/products', async function (req, res) {
 })
 
 //api for delete
-app.delete('/products', async function (req, res) {
+//api for delete
+app.delete('/products/:id', async function (req, res) {
     try {
-        const { title } = req.body;
-        const deleted = await productmodel.findOneAndDelete({ title });
+        const { id } = req.params;
+        const deleted = await productmodel.findByIdAndDelete(id);
 
         if (!deleted) {
             return res.status(404).json({ message: 'Product not found' });
         }
+
 
         res.status(200).json({
             message: 'Product deleted successfully',
@@ -315,6 +341,25 @@ app.delete('/products', async function (req, res) {
         res.status(500).json({ message: error.message });
     }
 
+})
+
+//api for update
+app.put('/products/:id', async function (req, res) {
+    try {
+        const { id } = req.params;
+        const updatedProduct = await productmodel.findByIdAndUpdate(id, req.body, { new: true });
+
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        res.status(200).json({
+            message: 'Product updated successfully',
+            data: updatedProduct
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 })
 
 

@@ -38,7 +38,7 @@ const Orders = () => {
                     <h1>No Orders Yet</h1>
                     <p>You haven't placed any orders yet. Start shopping to see your orders here!</p>
                     <button
-                        className="btn btn-primary checkout-btn"
+                        className="!btn checkout-btn"
                         onClick={() => navigate('/')}
                     >
                         Start Shopping
@@ -97,7 +97,7 @@ const Orders = () => {
                                 <span>Expected Delivery: {formatDate(order.deliveryDate)}</span>
                             </div>
                             <button
-                                className="btn-track-order"
+                                className="btn btn-primary hover:!bg-red-500 !rounded-full"
                                 onClick={() => navigate(`/track-order/${order.id}`)}
                             >
                                 Track Order
