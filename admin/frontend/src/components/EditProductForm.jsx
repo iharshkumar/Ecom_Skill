@@ -57,7 +57,7 @@ const EditProductForm = ({ product, onCancel, onSuccess }) => {
         if (!isConfirmed) return;
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/products/${product._id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://ecom-skill-1.onrender.com'}/products/${product._id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

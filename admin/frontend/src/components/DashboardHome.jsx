@@ -12,7 +12,7 @@ const DashboardHome = () => {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACKEND_URL}/products`)
+        fetch(`${import.meta.env.VITE_API_URL || 'https://ecom-skill-1.onrender.com'}/products`)
             .then(res => res.json())
             .then(data => setProducts(data))
             .catch(err => console.error(err));

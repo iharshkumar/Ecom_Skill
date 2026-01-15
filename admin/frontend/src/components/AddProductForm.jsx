@@ -35,7 +35,7 @@ const AddProductForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/products`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://ecom-skill-1.onrender.com'}/products`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

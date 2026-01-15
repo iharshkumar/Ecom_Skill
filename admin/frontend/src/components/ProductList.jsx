@@ -11,7 +11,7 @@ const ProductList = ({ setActiveTab, setEditingProduct }) => {
 
     const fetchProducts = () => {
         setLoading(true);
-        fetch(`${import.meta.env.VITE_BACKEND_URL}/products`)
+        fetch(`${import.meta.env.VITE_API_URL || 'https://ecom-skill-1.onrender.com'}/products`)
             .then(res => res.json())
             .then(data => {
                 setProducts(data);
@@ -33,7 +33,7 @@ const ProductList = ({ setActiveTab, setEditingProduct }) => {
     };
 
     const confirmDelete = (id) => {
-        fetch(`${import.meta.env.VITE_BACKEND_URL}/products/${id}`, {
+        fetch(`${import.meta.env.VITE_API_URL || 'https://ecom-skill-1.onrender.com'}/products/${id}`, {
             method: 'DELETE',
         })
             .then(res => {
