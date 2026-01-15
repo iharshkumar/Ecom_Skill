@@ -86,45 +86,15 @@ A full-stack e-commerce application built with React, Node.js, Express, and Mong
 
 ```
 collegebackend/
-├── backend/
-│   ├── app.js                 # Express server setup
-│   ├── models/
-│   │   ├── productmodel.js    # Product schema
-│   │   └── usermodel.js       # User schema
-│   └── package.json
+├── admin/                 # Admin Panel
+│   ├── frontend/          # Admin Dashboard UI
+│   └── backend/           # Admin API & Logic
 │
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Navbar.jsx     # Navigation bar
-│   │   │   ├── Hero.jsx       # Hero section with slider
-│   │   │   ├── Products.jsx   # Product card component
-│   │   │   ├── Footer.jsx     # Footer component
-│   │   │   └── Toast.jsx      # Toast notifications
-│   │   │
-│   │   ├── pages/
-│   │   │   ├── Home.jsx       # Home page
-│   │   │   ├── Cart.jsx       # Shopping cart
-│   │   │   ├── Wishlist.jsx   # Wishlist page
-│   │   │   ├── Orders.jsx     # Order history
-│   │   │   ├── OrderSuccess.jsx # Order confirmation
-│   │   │   ├── OrderTracking.jsx # Order tracking
-│   │   │   ├── Profile.jsx    # User profile
-│   │   │   ├── Login.jsx      # Login page
-│   │   │   └── Register.jsx   # Registration page
-│   │   │
-│   │   ├── context/
-│   │   │   ├── AuthContext.jsx      # Authentication state
-│   │   │   ├── CartContext.jsx      # Cart state (user-specific)
-│   │   │   ├── WishlistContext.jsx  # Wishlist state (user-specific)
-│   │   │   ├── OrderContext.jsx     # Orders state (user-specific)
-│   │   │   └── ToastContext.jsx     # Toast notifications
-│   │   │
-│   │   ├── App.jsx            # Main app component
-│   │   ├── App.css            # Global styles
-│   │   └── main.jsx           # Entry point
-│   │
-│   └── package.json
+├── client/                # Customer Application
+│   ├── frontend/          # Main Shopping Site UI
+│   └── backend/           # Customer API & Logic
+│
+└── README.md              # Project Documentation
 ```
 
 ## 🛠️ Installation & Setup
@@ -134,53 +104,46 @@ collegebackend/
 - MongoDB (local or Atlas)
 - npm or yarn
 
+### 1. Setup Client (User App)
 
-1. **Navigate to frontend directory**
+**Frontend:**
 ```bash
-cd frontend
-```
-
-2. **Install dependencies**
-```bash
+cd client/frontend
 npm install
-```
-
-3. **Create `.env` file**
-```env
-VITE_API_URL=http://localhost:3000
-```
-
-For production (Render):
-```env
-VITE_API_URL=https://your-backend-url.onrender.com
-```
-
-4. **Start development server**
-```bash
 npm run dev
 ```
+*Creates `.env`: `VITE_API_URL=http://localhost:3000`*
 
-Frontend will run on `http://localhost:5173`
+**Backend:**
+```bash
+cd client/backend
+npm install
+node app.js
+```
+*Creates `.env` with `MONGODB_URL` etc.*
 
+### 2. Setup Admin Panel
 
-## 🌐 Deployment
+**Frontend:**
+```bash
+cd admin/frontend
+npm install
+npm run dev
+```
+*Creates `.env`: `VITE_API_URL=http://localhost:5000` (or Admin Backend Port)*
 
-### Backend (Render)
-1. Push code to GitHub
-2. Create new Web Service on Render
-3. Connect GitHub repository
-4. Set build command: `npm install`
-5. Set start command: `node app.js`
-6. Add environment variables
-7. Deploy
+**Backend:**
+```bash
+cd admin/backend
+npm install
+node index.js
+```
 
-### Frontend (Vercel)
-1. Push code to GitHub
-2. Import project on Vercel
-3. Set framework preset: Vite
-4. Set root directory: `frontend`
-5. Add environment variable: `VITE_API_URL`
-6. Deploy
+## 🌐 Live Demo
+
+- **Live Store:** [https://desiecommerce.vercel.app/](https://desiecommerce.vercel.app/)
+
+---
 
 ## 📝 API Endpoints
 
@@ -191,6 +154,8 @@ Frontend will run on `http://localhost:5173`
 ### Products
 - `GET /products` - Get all products
 - `POST /products` - Add new product (admin)
+- `PUT /products/:id` - Edit product (admin)
+- `DELETE /products/:id` - Delete product (admin)
 
 ## 🔐 User-Specific Data
 
@@ -228,27 +193,6 @@ Data automatically loads on login and clears on logout.
 - User-specific data isolation
 - Automatic persistence to localStorage
 
-## 🐛 Troubleshooting
-
-### CORS Issues
-Ensure backend has CORS enabled:
-```javascript
-app.use(cors());
-```
-
-### API Connection
-Check `VITE_API_URL` in frontend `.env` file matches backend URL
-
-### MongoDB Connection
-Verify MongoDB is running and connection string is correct
-
-### Build Errors
-Clear node_modules and reinstall:
-```bash
-rm -rf node_modules package-lock.json
-npm install
-```
-
 ## 📄 License
 
 This project is open source and available under the MIT License.
@@ -257,7 +201,14 @@ This project is open source and available under the MIT License.
 
 Contributions, issues, and feature requests are welcome!
 
-## 📞 Support
+## � Meet the Team
+
+- **Harsh Kumar**
+- **Priyanshu Mishra**
+- **Prajjwal Kumar Singh**
+- **Pratham Sharma**
+
+## �📞 Support
 
 For support, email srivastavaharsh1108@gmail.com or create an issue in the repository.
 
