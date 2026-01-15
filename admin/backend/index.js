@@ -16,25 +16,35 @@ mongoose.connect(process.env.MONGODB_URL)
 const productSchema = new mongoose.Schema({
     title: { type: String, required: true },
     price: { type: Number, required: true },
+    originalPrice: { type: Number },
     description: { type: String },
     rating: {
         rate: { type: Number, default: 0 },
         count: { type: Number, default: 0 }
     },
-    image: { type: String, required: true }
+    image: { type: String, required: true },
+    images: [String],
+    category: { type: String },
+    brand: { type: String },
+    sizes: [String]
 });
 
 const Product = mongoose.model('products', productSchema);
 
-app.post('/add-product', async (req, res) => {
+app.post('/products', async (req, res) => {
     try {
-        const { title, price, image, rating, description } = req.body;
+        const { title, price, image, rating, description, originalPrice, category, brand, sizes, images } = req.body;
         const newProduct = new Product({
             title,
             price,
             image,
             rating: rating || { rate: 0, count: 0 },
-            description
+            description,
+            originalPrice,
+            category,
+            brand,
+            sizes,
+            images
         });
         await newProduct.save();
         res.status(201).json({ message: 'Product added successfully', product: newProduct });
@@ -45,10 +55,36 @@ app.post('/add-product', async (req, res) => {
 
 app.get('/products', async (req, res) => {
     try {
-        const products = await Product.find();
+        const products = await Product.find().sort({ _id: -1 });
         res.status(200).json(products);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching products', error: error.message });
+    }
+});
+
+app.put('/products/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updatedProduct = await Product.findByIdAndUpdate(id, req.body, { new: true });
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        res.status(200).json({ message: 'Product updated successfully', product: updatedProduct });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating product', error: error.message });
+    }
+});
+
+app.delete('/products/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedProduct = await Product.findByIdAndDelete(id);
+        if (!deletedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        res.status(200).json({ message: 'Product deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting product', error: error.message });
     }
 });
 
