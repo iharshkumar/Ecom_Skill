@@ -33,6 +33,11 @@ const Product = mongoose.model('products', productSchema);
 
 app.post('/products', async (req, res) => {
     try {
+        if (Array.isArray(req.body)) {
+            const products = await Product.insertMany(req.body);
+            return res.status(201).json({ message: 'Products added successfully', products });
+        }
+
         const { title, price, image, rating, description, originalPrice, category, brand, sizes, images } = req.body;
         const newProduct = new Product({
             title,
