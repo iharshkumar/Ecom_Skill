@@ -19,10 +19,10 @@ export const ToastProvider = ({ children }) => {
 
         setToasts(prev => [...prev, newToast]);
 
-        // Auto-dismiss after 3 seconds
+        // Auto-dismiss after 4 seconds (allows for 3s display + animation)
         setTimeout(() => {
             removeToast(id);
-        }, 3000);
+        }, 4000);
 
         return id;
     }, []);

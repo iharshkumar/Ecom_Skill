@@ -81,13 +81,17 @@ const limiter = rateLimit({
 app.use(limiter);
 //middle ware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+//Global request logger removed
+
 
 
 app.use(cors()); // Allow all origins for now to ensure production works
 
 //s2
 async function connection() {
-    await mongoose.connect(process.env.MONGODB_URL);
+    await mongoose.connect(process.env.MONGODB_URL, { dbName: 'test' });
 }
 
 //s3
@@ -383,8 +387,8 @@ app.get('/details', function (req, res) {
 
 
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server is running on http://0.0.0.0:${port}`);
     connection();
     console.log('Connected to MongoDB');
 });

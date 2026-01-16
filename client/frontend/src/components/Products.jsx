@@ -45,14 +45,14 @@ const Products = ({ activeCategory }) => {
     const handleAddToCart = (product) => {
         addToCart(product);
         showSuccess(
-            <div className="flex items-center gap-4 min-w-[300px]">
-                <div className="w-16 h-16 flex-shrink-0 bg-white rounded-md border border-gray-100 p-1">
+            <div className="flex items-start gap-4 text-left">
+                <div className="w-16 h-16 flex-shrink-0 bg-white !py-4 !px-4 !rounded-md border border-gray-100 !p-1">
                     <img src={product.image} alt={product.title} className="w-full h-full object-contain" />
                 </div>
-                <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium text-green-600 mb-0.5">Successfully added to cart!</p>
-                    <h4 className="font-bold text-gray-900 text-sm line-clamp-1">{product.title}</h4>
-                    <div className="flex items-center gap-2 mt-1">
+                <div className="flex-1 flex flex-col min-w-0">
+                    <p className="!px-10 text-xs font-medium text-green-600 !mb-6">Successfully added to cart!</p>
+                    <h4 className="font-bold text-gray-900 text-sm line-clamp-1 !mb-1">{product.title}</h4>
+                    <div className="flex items-center gap-2">
                         <span className="font-bold text-gray-900">₹{product.price}</span>
                         {product.originalPrice > product.price && (
                             <span className="text-xs text-gray-400 line-through">₹{product.originalPrice}</span>
@@ -104,84 +104,93 @@ const Products = ({ activeCategory }) => {
                     </div>
                 ) : (
                     <div className="!w-[100%] !px-4">
-                        <Swiper
-                            key={activeCategory}
-                            modules={[Navigation, Pagination, A11y]}
-                            spaceBetween={17}
-                            slidesPerView={1}
-                            navigation
-                            pagination={{ clickable: true }}
-                            breakpoints={{
-                                640: { slidesPerView: 2, spaceBetween: 17 },
-                                778: { slidesPerView: 3, spaceBetween: 17 },
-                                1024: { slidesPerView: 4, spaceBetween: 17 },
-                                // Removed 1280 breakpoint to keep 4 slides max, ensuring scroll on larger screens if >4 products
-                            }}
-                            className="!mb-2"
-                        >
-                            {filteredProducts.map(product => (
-                                <SwiperSlide key={product._id} className="!h-auto !flex !justify-center">
-                                    <div
-                                        onClick={() => navigate(`/product/${product._id}`)}
-                                        className="!bg-white border !border-gray-100 !rounded-xl overflow-hidden hover:!shadow-lg transition-all duration-300 group cursor-pointer !h-full !flex !flex-col !max-w-[300px] !w-full !mx-auto"
+                        {Array.from({ length: Math.ceil(filteredProducts.length / 7) }).map((_, chunkIndex) => {
+                            const chunkStart = chunkIndex * 7;
+                            const chunkEnd = chunkStart + 7;
+                            const productChunk = filteredProducts.slice(chunkStart, chunkEnd);
+
+                            return (
+                                <div key={`swiper-chunk-${chunkIndex}`} className="!mb-8">
+                                    <Swiper
+                                        key={`${activeCategory}-chunk-${chunkIndex}`}
+                                        modules={[Navigation, Pagination, A11y]}
+                                        spaceBetween={17}
+                                        slidesPerView={1}
+                                        navigation
+                                        pagination={{ clickable: true }}
+                                        breakpoints={{
+                                            640: { slidesPerView: 2, spaceBetween: 17 },
+                                            778: { slidesPerView: 3, spaceBetween: 17 },
+                                            1024: { slidesPerView: 4, spaceBetween: 17 },
+                                            1280: { slidesPerView: 5, spaceBetween: 17 },
+                                        }}
+                                        className="!mb-2"
                                     >
-                                        <div className="relative aspect-[3/4] bg-gray-50 overflow-hidden">
-                                            <img
-                                                src={product.image}
-                                                alt={product.title}
-                                                className="!w-full !h-full !object-cover transition-transform duration-700 group-hover:scale-105"
-                                            />
-                                            {product.originalPrice > product.price && (
-                                                <span className="absolute top-2 left-2 bg-red-500 text-white !text-[10px] !font-bold !px-2 !py-1 !rounded-sm uppercase">
-                                                    -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
-                                                </span>
-                                            )}
-                                            <button
-                                                onClick={(e) => handleToggleWishlist(product, e)}
-                                                className={`absolute top-2 right-2 !p-2 !rounded-full bg-white/80 backdrop-blur-sm shadow-sm hover:bg-white transition-all ${isInWishlist(product._id) ? 'text-red-500' : 'text-gray-600'}`}
-                                            >
-                                                <Heart size={18} className={isInWishlist(product._id) ? "fill-current" : ""} />
-                                            </button>
-                                        </div>
-
-                                        <div className="!p-4 !flex-1 !flex !flex-col">
-                                            <div className="!text-xs text-red-400 uppercase !font-semibold !mb-1">
-                                                {product.brand || product.category || 'Generic'}
-                                            </div>
-                                            <h3 className="!font-bold text-gray-900 !mb-1 line-clamp-1 group-hover:text-blue-600">
-                                                {product.title}
-                                            </h3>
-                                            <div className="!flex !items-center !gap-1.5 !mb-3">
-                                                <Star size={12} className="text-yellow-400 fill-current" />
-                                                <span className="!text-xs !font-medium text-gray-600">{product.rating?.rate || 4.5}</span>
-                                                <span className="!text-xs text-gray-300">|</span>
-                                                <span className="!text-xs text-gray-400">({product.rating?.count || 10})</span>
-                                            </div>
-
-                                            <div className="!mt-auto !pt-2 flex items-center gap-6">
-                                                <div className="!flex !items-center !gap-2 !mb-3">
-                                                    <span className="!text-lg !font-bold text-green-600">₹{product.price}</span>
-                                                    {product.originalPrice > product.price && (
-                                                        <span className="!text-sm text-gray-400 line-through">₹{product.originalPrice}</span>
-                                                    )}
-                                                </div>
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        handleAddToCart(product);
-                                                    }}
-                                                    className="!w-full !bg-black !text-white !py-2.5 !rounded-lg !text-sm !font-bold !flex !items-center !justify-center !gap-2 hover:!bg-red-500 transition-colors"
+                                        {productChunk.map(product => (
+                                            <SwiperSlide key={product._id} className="!h-auto !flex !justify-center">
+                                                <div
+                                                    onClick={() => navigate(`/product/${product._id}`)}
+                                                    className="!bg-white border !border-gray-100 !rounded-xl overflow-hidden hover:!shadow-lg transition-all duration-300 group cursor-pointer !h-full !flex !flex-col !max-w-[240px] !w-full !mx-auto"
                                                 >
-                                                    <ShoppingCart size={16} />
-                                                    Add to Cart
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </SwiperSlide>
-                            ))}
-                        </Swiper>
+                                                    <div className="relative aspect-[3/4] bg-gray-50 overflow-hidden">
+                                                        <img
+                                                            src={product.image}
+                                                            alt={product.title}
+                                                            className="!w-full !h-full !object-cover transition-transform duration-700 group-hover:scale-105"
+                                                        />
+                                                        {product.originalPrice > product.price && (
+                                                            <span className="absolute top-2 left-2 bg-red-500 text-white !text-[10px] !font-bold !px-2 !py-1 !rounded-sm uppercase">
+                                                                -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
+                                                            </span>
+                                                        )}
+                                                        <button
+                                                            onClick={(e) => handleToggleWishlist(product, e)}
+                                                            className={`absolute top-2 right-2 !p-2 !rounded-full bg-white/80 backdrop-blur-sm shadow-sm hover:bg-white transition-all ${isInWishlist(product._id) ? 'text-red-500' : 'text-gray-600'}`}
+                                                        >
+                                                            <Heart size={18} className={isInWishlist(product._id) ? "fill-current" : ""} />
+                                                        </button>
+                                                    </div>
 
+                                                    <div className="!p-4 !flex-1 !flex !flex-col">
+                                                        <div className="!text-xs text-red-400 uppercase !font-semibold !mb-1">
+                                                            {product.brand || product.category || 'Generic'}
+                                                        </div>
+                                                        <h3 className="!font-bold text-gray-900 !mb-1 line-clamp-1 group-hover:text-blue-600">
+                                                            {product.title}
+                                                        </h3>
+                                                        <div className="!flex !items-center !gap-1.5 !mb-3">
+                                                            <Star size={12} className="text-yellow-400 fill-current" />
+                                                            <span className="!text-xs !font-medium text-gray-600">{product.rating?.rate || 4.5}</span>
+                                                            <span className="!text-xs text-gray-300">|</span>
+                                                            <span className="!text-xs text-gray-400">({product.rating?.count || 10})</span>
+                                                        </div>
+
+                                                        <div className="!mt-auto !pt-2">
+                                                            <div className="!flex !items-center !gap-2 !mb-3">
+                                                                <span className="!text-lg !font-bold text-green-600">₹{product.price}</span>
+                                                                {product.originalPrice > product.price && (
+                                                                    <span className="!text-sm text-gray-400 line-through">₹{product.originalPrice}</span>
+                                                                )}
+                                                            </div>
+                                                            <button
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleAddToCart(product);
+                                                                }}
+                                                                className="!w-full whitespace-nowrap !bg-black !text-white !py-2.5 !rounded-lg !text-sm !font-bold !flex !items-center !justify-center !gap-2 hover:!bg-red-500 transition-colors"
+                                                            >
+                                                                <ShoppingCart size={16} />
+                                                                Add to Cart
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </SwiperSlide>
+                                        ))}
+                                    </Swiper>
+                                </div>
+                            );
+                        })}
                     </div>
                 )}
             </div>
