@@ -15,6 +15,7 @@ import { ToastProvider } from './context/ToastContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { OrderProvider } from './context/OrderContext';
 import ToastContainer from './components/Toast';
+import Chatbot from './components/Chatbot';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProductDetails from './pages/ProductDetails';
@@ -31,6 +32,7 @@ function App() {
                 <div className="app">
                   <Navbar />
                   <ToastContainer />
+                  <Chatbot />
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/product/:id" element={<ProductDetails />} />

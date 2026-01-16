@@ -7,9 +7,11 @@ const cors = require('cors'); //to allow cross-origin requests
 const bcrypt = require('bcrypt');
 const { rateLimit } = require('express-rate-limit');
 const jwt = require('jsonwebtoken');
+//const { GoogleGenerativeAI } = require('@google/generative-ai');
+const Groq = require('groq-sdk');
 const dotenv = require('dotenv');
 dotenv.config();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 const secretkey = process.env.SECRETKEY
 
 
@@ -253,9 +255,7 @@ app.post('/login', async (req, res) => {
 
         // generate a token if details are authentucated using
         //1. payload 
-
         //2. secret key
-
         // 3. expiration date 
         let payload = {
             username: username
@@ -271,6 +271,66 @@ app.post('/login', async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+});
+
+// Groq Chat Endpoint
+app.post('/chat', async (req, res) => {
+    try {
+        const { message, history } = req.body;
+
+        // 1. Fetch all products to build context
+        const products = await productmodel.find({});
+
+        // 2. Create a systematic context string (Highly Optimized for Rate Limits)
+        // Limit to top 20 products to stay within 6000 TPM limit
+        const limitedProducts = products.slice(0, 20);
+
+        const productContext = limitedProducts.map(p =>
+            `${p.title}|₹${p.price}|${p.category}|${p.description ? p.description.substring(0, 100) : "N/A"}`
+        ).join('\n');
+
+        const systemInstruction = `You are an AI Shopping Assistant. 
+        CONTEXT:
+        ${productContext}
+        
+        RULES:
+        1. Answer in the user's chosen language (English, Hindi, Kannada, Hinglish).
+        2. STRICTLY use only the provided product data.
+        3. No probing or external info.
+        
+        Current User Question: ${message}`;
+
+        // 3. Initialize Groq
+        const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+
+        // 4. Prepare messages for Groq (System + History + User)
+        // Keep only last 10 messages to save context window
+        const recentHistory = (history || []).slice(-10);
+
+        const groqMessages = [
+            { role: "system", content: systemInstruction },
+            ...recentHistory.map(msg => ({
+                role: msg.role === 'model' ? 'assistant' : 'user',
+                content: msg.text || msg.parts?.[0]?.text || ""
+            })),
+            { role: "user", content: message }
+        ];
+
+        const chatCompletion = await groq.chat.completions.create({
+            messages: groqMessages,
+            model: "llama-3.1-8b-instant",
+            temperature: 0.6,
+            max_tokens: 1024,
+        });
+
+        const reply = chatCompletion.choices[0]?.message?.content || "Maaf kijiye, main abhi answer nahi de pa raha hoon.";
+
+        res.json({ reply });
+
+    } catch (error) {
+        console.error("Groq Chat Error:", error);
+        res.status(500).json({ message: "Failed to generate response", error: error.message });
     }
 });
 
