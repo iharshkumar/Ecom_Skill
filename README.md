@@ -64,6 +64,12 @@ A full-stack e-commerce application built with React, Node.js, Express, and Mong
 - Error handling
 - LocalStorage persistence per user
 
+### 🤖 AI Shopping Assistant
+- **Powered by Groq**: Ultra-fast responses using Llama 3 models
+- **Multi-language Support**: Fluent in English, Hindi, Kannada, and Hinglish
+- **Context-Aware**: Answers solely based on your product catalog
+- **Strict Persona**: Professional customer support behavior with no hallucinations
+
 ## 🚀 Tech Stack
 
 ### Frontend
@@ -80,6 +86,7 @@ A full-stack e-commerce application built with React, Node.js, Express, and Mong
 - **Mongoose** - ODM for MongoDB
 - **JWT** - Authentication
 - **bcrypt** - Password hashing
+- **Groq SDK** - AI Model Integration
 - **CORS** - Cross-origin resource sharing
 
 ## 📁 Project Structure
