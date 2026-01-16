@@ -279,33 +279,79 @@ app.post('/chat', async (req, res) => {
     try {
         const { message, history } = req.body;
 
-        // 1. Fetch all products to build context
-        const products = await productmodel.find({});
+        // 1. Fetch all unique categories to inform the AI
+        const allCategories = await productmodel.distinct('category');
 
-        // 2. Create a systematic context string (Highly Optimized for Rate Limits)
-        // Limit to top 20 products to stay within 6000 TPM limit
-        const limitedProducts = products.slice(0, 20);
+        // 2. Intelligent Product Search
+        let products = [];
+        let searchContext = "General Featured Products";
 
-        const productContext = limitedProducts.map(p =>
-            `${p.title}|₹${p.price}|${p.category}|${p.description ? p.description.substring(0, 100) : "N/A"}`
+        // Check for specific keywords/categories in the user message
+        const lowerMessage = message.toLowerCase();
+
+        // Find if any category matches the user message
+        const matchedCategory = allCategories.find(cat =>
+            lowerMessage.includes(cat.toLowerCase())
+        );
+
+        if (matchedCategory) {
+            // Priority 1: Category Match
+            products = await productmodel.find({ category: matchedCategory }).limit(20);
+            searchContext = `Products in category: ${matchedCategory}`;
+        } else {
+            // Priority 2: Keyword Search (regex on title/category)
+            // Create a regex from significant words in the message (filtering out common stopwords)
+            const stopWords = ['i', 'want', 'see', 'show', 'me', 'some', 'the', 'a', 'an', 'in', 'of', 'for', 'buy'];
+            const keywords = lowerMessage.split(' ')
+                .filter(w => !stopWords.includes(w) && w.length > 2);
+
+            if (keywords.length > 0) {
+                const regexQueries = keywords.map(kw => ({
+                    $or: [
+                        { title: { $regex: kw, $options: 'i' } },
+                        { category: { $regex: kw, $options: 'i' } },
+                        { description: { $regex: kw, $options: 'i' } }
+                    ]
+                }));
+
+                products = await productmodel.find({ $or: regexQueries }).limit(20);
+                if (products.length > 0) {
+                    searchContext = `Search results for keywords: ${keywords.join(', ')}`;
+                }
+            }
+        }
+
+        // Fallback: If no specific products found, fetch default/latest products
+        if (products.length === 0) {
+            products = await productmodel.find({}).sort({ _id: -1 }).limit(20);
+        }
+
+        // 3. Create context string
+        const productContext = products.map(p =>
+            `${p.title} (Cateogry: ${p.category})|₹${p.price}|${p.description ? p.description.substring(0, 100) : "N/A"}`
         ).join('\n');
 
         const systemInstruction = `You are an AI Shopping Assistant. 
-        CONTEXT:
+        
+        STORE INFORMATION:
+        - Available Categories: ${allCategories.join(', ')}
+        
+        CURRENT CONTEXT (${searchContext}):
         ${productContext}
         
         RULES:
         1. Answer in the user's chosen language (English, Hindi, Kannada, Hinglish).
-        2. STRICTLY use only the provided product data.
-        3. No probing or external info.
+        2. STRICTLY use only the provided product data in "CURRENT CONTEXT".
+        3. If the user asks for a category listed in "Available Categories" but you don't see items in "CURRENT CONTEXT", apologize and say you'll fetch them (the system will handle the fetch in the next turn if they ask again specificially).
+        4. If the user asks about something not in the store, politely decline.
+        5. Be helpful, enthusiastic, and concise.
         
         Current User Question: ${message}`;
 
-        // 3. Initialize Groq
+        // 4. Initialize Groq
         const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-        // 4. Prepare messages for Groq (System + History + User)
-        // Keep only last 10 messages to save context window
+        // 5. Prepare messages for Groq
         const recentHistory = (history || []).slice(-10);
 
         const groqMessages = [

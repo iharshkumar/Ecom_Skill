@@ -176,7 +176,7 @@ const EditProductForm = ({ product, onCancel, onSuccess }) => {
                                     <option>Footwear</option>
                                     <option>Groceries</option>
                                     <option>Beauty</option>
-                                    <option>Wellness</option>
+                                    <option>Medicine</option>
                                     <option>Jewellery</option>
                                 </select>
                             </div>

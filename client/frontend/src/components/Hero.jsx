@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+
 const Hero = ({ setActiveCategory }) => {
     const banners = [
         "https://i.pinimg.com/736x/cb/35/d8/cb35d84391109bdd2a010f06c237627c.jpg",
@@ -17,14 +18,14 @@ const Hero = ({ setActiveCategory }) => {
     }, []);
 
     const categories = [
-        { name: 'Fashion', icon: '👗' },
-        { name: 'Electronics', icon: '📱' },
-        { name: 'Bags', icon: '👜' },
-        { name: 'Footwear', icon: '👟' },
-        { name: 'Groceries', icon: '🥦' },
-        { name: 'Beauty', icon: '💄' },
-        { name: 'Wellness', icon: '🧘' },
-        { name: 'Jewellery', icon: '💎' }
+        { name: 'Fashion', icon: <img src="/brand.png" alt="Fashion" className="w-10 h-10 object-contain" /> },
+        { name: 'Electronics', icon: <img src="/electronics.png" alt="Electronics" className="w-10 h-10 object-contain" /> },
+        { name: 'Bags', icon: <img src="/school-bag.png" alt="Bags" className="w-10 h-10 object-contain" /> },
+        { name: 'Footwear', icon: <img src="/footwear.png" alt="Footwear" className="w-10 h-10 object-contain" /> },
+        { name: 'Groceries', icon: <img src="/basket.png" alt="Groceries" className="w-10 h-10 object-contain" /> },
+        { name: 'Beauty', icon: <img src="/beauty-product.png" alt="Beauty" className="w-10 h-10 object-contain" /> },
+        { name: 'Medicine', icon: <img src="/medicine.png" alt="Medicine" className="w-10 h-10 object-contain" /> },
+        { name: 'Jewellery', icon: <img src="/jewelry.png" alt="Jewellery" className="w-10 h-10 object-contain" /> }
     ];
 
     return (
