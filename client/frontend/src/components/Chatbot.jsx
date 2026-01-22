@@ -100,7 +100,7 @@ const Chatbot = () => {
             {!isOpen && (
                 <button
                     onClick={toggleChat}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white !p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 flex items-center justify-center group"
+                    className="!bg-red-500 hover:!bg-red-700 text-white !p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 flex items-center justify-center group"
                 >
                     <MessageSquare size={28} />
                     <span className="absolute right-full !mr-3 bg-gray-800 text-white text-xs !px-2 !py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
@@ -113,7 +113,7 @@ const Chatbot = () => {
             {isOpen && (
                 <div className="bg-white rounded-2xl shadow-2xl w-[350px] sm:w-[380px] h-[500px] flex flex-col overflow-hidden border border-gray-100 animate-slide-up">
                     {/* Header */}
-                    <div className="bg-gradient-to-r from-indigo-600 to-indigo-800 !p-4 flex justify-between items-center text-white">
+                    <div className="bg-gradient-to-r from-blue-300 to-blue-600 !p-4 flex justify-between items-center text-white">
                         <div className="flex items-center gap-2">
                             <div className="bg-white/20 !p-2 rounded-full">
                                 <ShoppingBag size={18} />

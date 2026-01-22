@@ -7,6 +7,10 @@ export default defineConfig({
   server: {
     proxy: {
       '/chat': 'http://localhost:3000',
+      '/products': 'http://localhost:3000',
+      '/login': 'http://localhost:3000',
+      '/users': 'http://localhost:3000',
+      '/register': 'http://localhost:3000',
     }
   }
 })

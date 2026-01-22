@@ -37,8 +37,6 @@ body {
 
 /* Navbar */
 .navbar {
-  background-color: #d0d79a;
-  color: white;
   padding: 0.8rem 0;
   position: sticky;
   top: 0;
@@ -81,6 +79,9 @@ body {
   padding: 0.6rem 1rem;
   font-size: 0.95rem;
   outline: none;
+  color: #000000 !important;
+  background-color: #ffffff !important;
+  border-radius: 4px 0 0 4px !important;
 }
 
 .search-btn {
@@ -90,10 +91,11 @@ body {
   cursor: pointer;
   color: #e4e5e7 !important;
   font-weight: 600;
+  border-radius: 0 4px 4px 0 !important;
 }
 
 .search-btn:hover {
-  background-color: #0d3fe4 !important;
+  background-color: #040404 !important;
 }
 
 /* Nav Links */
@@ -525,4 +527,28 @@ main {
   display: block !important;
   width: 100% !important;
   overflow: hidden;
+}
+
+/* Enhanced Swiper Navigation Buttons */
+.swiper-button-next,
+.swiper-button-prev {
+  background-color: #fff !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  color: #212121 !important;
+  border: 10px solid #fff !important;
+  transition: all 0.2s ease !important;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 1rem !important;
+  font-weight: bold !important;
+  padding-left: 50px !important;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  transform: scale(1.2);
 }

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
+    const navigate = useNavigate();
     const { getCartCount } = useCart();
     const { getWishlistCount } = useWishlist();
     const { user } = useAuth();
@@ -42,14 +43,23 @@ const Navbar = () => {
                 </Link>
 
                 <div className="navbar-search">
-                    <input
-                        type="text"
-                        className="search-input"
-                        placeholder="Search for products, brands and more"
-                    />
-                    <button className="search-btn">
-                        Search
-                    </button>
+                    <form onSubmit={(e) => {
+                        e.preventDefault();
+                        const query = e.target.search.value.trim();
+                        if (query) {
+                            navigate(`/?search=${encodeURIComponent(query)}`);
+                        }
+                    }} className="search-form" style={{ display: 'flex', width: '100%' }}>
+                        <input
+                            type="text"
+                            name="search"
+                            className="search-input"
+                            placeholder="Search for products, brands and more"
+                        />
+                        <button type="submit    " className="search-btn !p-[10px] !rounded-md">
+                            Search
+                        </button>
+                    </form>
                 </div>
 
                 <button

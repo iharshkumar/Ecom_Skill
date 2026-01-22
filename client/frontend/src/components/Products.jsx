@@ -11,7 +11,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-const Products = ({ activeCategory }) => {
+const Products = ({ activeCategory, searchQuery }) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -22,7 +22,11 @@ const Products = ({ activeCategory }) => {
     const { showSuccess } = useToast();
 
     useEffect(() => {
-        const apiUrl = `${import.meta.env.VITE_API_URL || 'https://ecom-skill-2.onrender.com'}/products`;
+        let apiUrl = `${import.meta.env.VITE_API_URL || ''}/products`;
+        if (searchQuery) {
+            apiUrl += `?search=${encodeURIComponent(searchQuery)}`;
+        }
+
         console.log("Fetching from:", apiUrl);
         fetch(apiUrl)
             .then(response => {
@@ -40,7 +44,7 @@ const Products = ({ activeCategory }) => {
                 setError('Failed to load products');
                 setLoading(false);
             });
-    }, []);
+    }, [searchQuery, activeCategory]); // Re-fetch when search or category changes (though category logic is client-side for now, re-fetching ensures clean state)
 
     const handleAddToCart = (product) => {
         addToCart(product);
@@ -79,9 +83,11 @@ const Products = ({ activeCategory }) => {
     if (loading) return <div className="p-10 text-center text-gray-500">Loading products...</div>;
     if (error) return <div className="p-10 text-center text-red-500">{error}</div>;
 
-    const filteredProducts = activeCategory === "All"
+    const filteredProducts = searchQuery
         ? products
-        : products.filter(p => (p.category || 'General').toLowerCase() === activeCategory.toLowerCase());
+        : (activeCategory === "All"
+            ? products
+            : products.filter(p => (p.category || 'General').toLowerCase() === activeCategory.toLowerCase()));
 
     return (
         <>
@@ -89,7 +95,7 @@ const Products = ({ activeCategory }) => {
                 <div className="!flex !justify-between !items-end !px-4">
                     <div>
                         <h2 className="!text-3xl !font-bold !text-gray-900 !tracking-tight">
-                            {activeCategory === "All" || activeCategory === "General" ? "Featured Products" : `${activeCategory}`}
+                            {searchQuery ? `Search Results for "${searchQuery}"` : (activeCategory === "All" || activeCategory === "General" ? "Featured Products" : `${activeCategory}`)}
                         </h2>
                         <p className="!text-gray-500 !mt-2 !text-sm">Explore our latest collection</p>
                     </div>
@@ -97,7 +103,7 @@ const Products = ({ activeCategory }) => {
 
                 {filteredProducts.length === 0 ? (
                     <div className="text-center !py-12 text-gray-500 bg-gray-50 !rounded-lg !mx-4">
-                        <p className="text-lg">No products found in {activeCategory}.</p>
+                        <p className="text-lg">No products found {searchQuery ? `for "${searchQuery}"` : `in ${activeCategory}`}.</p>
                         <button onClick={() => window.location.reload()} className="!mt-4 text-blue-600 hover:underline">
                             Refresh Page
                         </button>
