@@ -545,7 +545,6 @@ main {
 .swiper-button-prev::after {
   font-size: 1rem !important;
   font-weight: bold !important;
-  padding-left: 50px !important;
 }
 
 .swiper-button-next:hover,

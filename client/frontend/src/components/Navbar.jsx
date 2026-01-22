@@ -56,7 +56,7 @@ const Navbar = () => {
                             className="search-input"
                             placeholder="Search for products, brands and more"
                         />
-                        <button type="submit    " className="search-btn !p-[10px] !rounded-md">
+                        <button type="submit" className="search-btn !p-[10px] !rounded-md">
                             Search
                         </button>
                     </form>
