@@ -198,6 +198,17 @@ app.post('/register', async (req, res) => {
         const usernames = users.map(u => u.username);
         const emails = users.map(u => u.email);
 
+        // Password Validation
+        for (const user of users) {
+            const password = user.password;
+            if (!/^[A-Z]/.test(password)) {
+                return res.status(400).json({ message: 'Password must start with a capital letter.' });
+            }
+            if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+                return res.status(400).json({ message: 'Password must contain at least one special character.' });
+            }
+        }
+
         // Check for existing users
         const existingUsers = await usermodel.findOne({
             $or: [{ username: { $in: usernames } }, { email: { $in: emails } }]
@@ -421,13 +432,27 @@ app.delete('/users', async (req, res) => {
 //api-s\fetch all the products from db
 app.get('/products', async function (req, res) {
     try {
-        let Allproducts = await productmodel.find()
-        res.status(200).json(Allproducts)
+        const { search } = req.query;
+        let query = {};
+
+        if (search) {
+            query = {
+                $or: [
+                    { title: { $regex: search, $options: 'i' } },
+                    { description: { $regex: search, $options: 'i' } },
+                    { category: { $regex: search, $options: 'i' } }
+                ]
+            };
+        }
+
+        // If sorting is needed later: .sort({ _id: -1 })
+        let Allproducts = await productmodel.find(query);
+        res.status(200).json(Allproducts);
     }
     catch (error) {
-        res.json({
+        res.status(500).json({ // Changed to 500 for server error
             message: error.message
-        })
+        });
     }
 })
 
